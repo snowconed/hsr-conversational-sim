@@ -1,0 +1,67 @@
+:root { --ui-primary: #164b52; --ui-hover: #10373c; }
+.ui-container { max-width: 64rem; }
+h1 { font-size: clamp(1.6rem, 4vw, 2rem); }
+h2 { font-size: 1.25rem; }
+.chat-heading { align-items: center; gap: 16px; }
+.chat-heading h1 { flex: 1 1 25rem; margin: 0; }
+.chat-heading .stop-button { margin-left: 0; }
+.chat-log { display: flex; flex-direction: column; gap: 16px; max-height: min(60vh, 36rem); overflow-y: auto; padding: 4px; }
+.chat-message { max-width: 90%; min-width: 0; padding: 16px; border: 1px solid #b1bfc0; border-radius: 8px; background: #f3f7f7; align-self: flex-start; }
+.chat-message--user { align-self: flex-end; background: #fff; border-color: #767676; }
+.chat-message--pending { border-style: dashed; }
+.chat-message p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.chat-message .chat-speaker { font-size: .875rem; font-weight: 700; margin-bottom: 8px; }
+.chat-message .ui-btn { margin-top: 16px; }
+.chat-message .chat-note { font-size: .875rem; color: #595959; margin-top: 8px; }
+.action-buttons { gap: 8px; }
+.action-buttons .ui-btn { font-weight: 500; padding-inline: 16px; }
+.stop-button { background: #b00020; border-color: #b00020; margin-left: auto; }
+.stop-button:hover { background: #850019; border-color: #850019; }
+#input-status:empty { display: none; }
+#program-input-status:empty, #program-message:empty, #program-report:empty, #save-status:empty { display: none; }
+textarea.ui-input { width: 100%; resize: vertical; min-height: 8rem; }
+textarea[readonly] { background: #f5f6f6; }
+.voice-input { gap: 8px; }
+.voice-input p { margin: 0; }
+.voice-level { display: grid; min-width: 10rem; gap: 4px; font-size: .875rem; }
+.voice-level meter { width: 100%; height: 20px; }
+.voice-input [hidden] { display: none; }
+.robot-speech-controls { gap: 8px 16px; }
+.speech-toggle { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; }
+.speech-toggle input { width: 20px; height: 20px; accent-color: var(--ui-primary); }
+.speech-toggle input:focus-visible { outline: 3px solid var(--ui-primary); outline-offset: 3px; }
+.speech-settings { align-items: end; }
+.speech-settings > div { min-width: 0; max-width: 100%; }
+.speech-settings select { display: block; max-width: 100%; }
+.chat-message .speech-replay { display: block; font-size: .875rem; padding: 8px 12px; min-height: 44px; }
+#robot-speech-error[hidden] { display: none; }
+#program-summary, .program-report { font-size: 1.125rem; font-weight: 600; white-space: pre-wrap; overflow-wrap: anywhere; }
+.save-row { align-items: end; }
+.save-name-field { flex: 1 1 16rem; }
+.save-name-field input { width: 100%; }
+.saved-list, .revision-list { padding-left: 24px; }
+.saved-list li { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-block: 12px; }
+.saved-list li span { overflow-wrap: anywhere; min-width: 0; }
+.saved-list li button { flex-shrink: 0; }
+.revision-list li { margin-block: 16px; }
+.revision-list p, #revision-info { overflow-wrap: anywhere; }
+.output-section { border-top: 2px solid #164b52; padding-top: 24px; }
+#reply { font-size: 1.125rem; font-weight: 600; }
+.output-data { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); gap: 16px; }
+.output-data div { min-width: 0; }
+.output-data dt { color: #595959; font-size: .875rem; }
+.output-data dd { margin: 4px 0 0; }
+details { border-top: 1px solid #aaa; padding-top: 16px; }
+summary { cursor: pointer; min-height: 44px; font-weight: 600; }
+.details-body { padding: 8px 0 16px; }
+pre { max-width: 100%; overflow: auto; font-size: .875rem; white-space: pre-wrap; overflow-wrap: anywhere; background: #f5f6f6; padding: 16px; border-radius: 8px; }
+code { overflow-wrap: anywhere; }
+@media (max-width: 480px) {
+  .ui-container { padding-top: 24px; }
+  .stop-button { margin-left: 0; width: 100%; }
+  .action-buttons .ui-btn { flex: 1 1 45%; }
+  .chat-message { max-width: 100%; }
+  .chat-heading h1 { flex-basis: 100%; }
+  .chat-heading .stop-button { width: auto; margin-left: auto; }
+  #chat-send { width: 100%; }
+}

@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>言葉で作るロボット点検プログラム</title>
+  <link rel="stylesheet" href="/static/base.css">
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+<a class="ui-skip" href="#main">操作へ移動</a>
+<main id="main" class="ui-container ui-stack">
+  <div class="ui-row chat-heading">
+    <h1>ロボットと相談して点検する</h1>
+    <button id="new-conversation" type="button" class="ui-btn ui-btn--secondary" disabled>新しい相談</button>
+    <button id="stop" type="button" class="ui-btn stop-button">すぐ停止</button>
+  </div>
+
+  <section aria-labelledby="program-input-title" class="ui-stack">
+    <h2 id="program-input-title">点検の相談</h2>
+    <div class="ui-row robot-speech-controls">
+      <label class="speech-toggle" for="robot-speech-auto"><input id="robot-speech-auto" type="checkbox" checked> 返答を自動で読み上げる</label>
+      <button id="robot-speech-stop" type="button" class="ui-btn ui-btn--secondary" disabled>読み上げを止める</button>
+    </div>
+    <p id="robot-speech-error" class="ui-error" role="alert" hidden></p>
+    <div id="chat-log" class="chat-log" role="log" aria-label="あなたとロボットの会話" aria-live="polite" aria-relevant="additions"></div>
+    <p id="program-input-status" role="status">接続を確認しています。</p>
+    <p id="program-error" class="ui-error" role="alert" hidden></p>
+    <form id="program-form" class="ui-stack">
+      <div>
+        <label for="program-instruction">ロボットへのメッセージ</label>
+        <textarea id="program-instruction" name="instruction" class="ui-input" rows="3" maxlength="2000"
+          placeholder="例：机の上の物を持ち上げて点検して。少し待ってから戻して。"
+          aria-describedby="program-input-status program-error program-voice-status program-voice-error" required></textarea>
+      </div>
+      <div class="voice-input ui-stack" role="group" aria-label="点検プログラムの音声入力">
+        <div class="ui-row">
+          <button id="program-voice" type="button" class="ui-btn ui-btn--secondary" aria-pressed="false" disabled>音声入力を開始</button>
+          <button id="program-voice-cancel" type="button" class="ui-btn ui-btn--secondary" hidden>キャンセル</button>
+          <div class="voice-level">
+            <label id="program-voice-level-text" for="program-voice-level">入力レベル：0%</label>
+            <meter id="program-voice-level" min="0" max="1" value="0">0%</meter>
+          </div>
+        </div>
+        <p id="program-voice-status" role="status">話した内容が入力欄に表示されます。音声入力を終了し、内容を確認して「送信」を押してください。</p>
+        <p id="program-voice-error" class="ui-error" role="alert" hidden></p>
+      </div>
+      <div class="ui-row">
+        <button id="chat-send" type="submit" class="ui-btn" disabled>送信</button>
+      </div>
+    </form>
+  </section>
+
+  <details>
+    <summary>ロボットの声・読み上げ設定</summary>
+    <div class="details-body ui-stack">
+      <p id="robot-speech-status" role="status">VOICEVOX の接続を確認しています。</p>
+      <div class="ui-row speech-settings">
+        <div>
+          <label for="robot-speech-speaker">ロボットの声</label>
+          <select id="robot-speech-speaker" class="ui-input"><option value="3" data-voice-name="ずんだもん">ずんだもん（ノーマル）</option></select>
+        </div>
+        <div>
+          <label for="robot-speech-speed">読み上げの速さ</label>
+          <select id="robot-speech-speed" class="ui-input"><option value="0.8">ゆっくり（0.8倍）</option><option value="1" selected>ふつう（1倍）</option><option value="1.2">少し速く（1.2倍）</option><option value="1.4">速く（1.4倍）</option></select>
+        </div>
+        <button id="robot-speech-refresh" type="button" class="ui-btn ui-btn--secondary">接続を確認</button>
+      </div>
+      <p id="robot-speech-credit">音声：VOICEVOX:ずんだもん</p>
+      <p>読み上げには Windows 上の無料の VOICEVOX を使います。返答の文章をこの PC 内の音声エンジンに送信します。新しい返答と実行結果を読み上げ、過去の会話は各メッセージの「読み上げる」で再生できます。音声入力中は読み上げません。</p>
+      <p>音が出ない場合は、返答の「読み上げる」を押してブラウザの音声再生を許可してください。接続できない場合は Windows で VOICEVOX を起動するか、ロボットの起動用スクリプトを実行し直し、「接続を確認」を押してください。</p>
+      <p><a href="https://voicevox.hiroshiba.jp/" target="_blank" rel="noopener noreferrer">VOICEVOX 公式サイト</a>。動画などを公開する場合は使用した音声のクレジットを付け、各キャラクターの利用規約も確認してください。</p>
+    </div>
+  </details>
+
+  <details>
+    <summary>プログラムに名前を付けて保存する</summary>
+    <div class="details-body ui-stack">
+    <form id="save-form" class="ui-row save-row">
+      <div class="save-name-field">
+        <label for="save-name">保存する名前</label>
+        <input id="save-name" name="name" class="ui-input" maxlength="80" value="机の上の点検" required>
+      </div>
+      <button id="save-program" type="submit" class="ui-btn ui-btn--secondary" disabled>保存する</button>
+    </form>
+    <p id="save-status" role="status"></p>
+    </div>
+  </details>
+
+  <details>
+    <summary>生成した Python コード・修正履歴</summary>
+    <div class="details-body ui-stack">
+      <p id="program-summary">まだプログラムはありません。</p>
+      <pre><code id="program-code">まだ生成されていません。</code></pre>
+      <p id="revision-info"></p>
+      <ol id="revision-history" class="revision-list"></ol>
+    </div>
+  </details>
+  <details>
+    <summary>保存したプログラムを読み込む</summary>
+    <div class="details-body ui-stack">
+      <button id="refresh-saved" type="button" class="ui-btn ui-btn--secondary">一覧を更新</button>
+      <p id="saved-status" role="status"></p>
+      <ul id="saved-list" class="saved-list"></ul>
+    </div>
+  </details>
+  <details>
+    <summary>ロボットの状態・プログラムの実行履歴</summary>
+    <div class="details-body">
+      <dl class="output-data">
+        <div><dt>プログラムの実行状態</dt><dd id="program-status">未実行</dd></div>
+        <div><dt>ロボットの状態</dt><dd id="robot-status">未接続</dd></div>
+        <div><dt>保持中の物体</dt><dd id="holding">未確認</dd></div>
+      </dl>
+      <p id="program-message"></p>
+      <p id="program-report" class="program-report"></p>
+      <pre id="program-steps">まだ実行していません。</pre>
+    </div>
+  </details>
+
+  <details>
+    <summary>一つずつ動かす・音声で操作する</summary>
+    <div class="details-body ui-stack">
+    <section aria-labelledby="input-title" class="ui-stack">
+    <h2 id="input-title">単発動作の入力</h2>
+    <p>こちらは一つの動作を直接実行します。点検プログラムの生成・修正には、上のチャットを使ってください。</p>
+    <form id="command-form" class="ui-stack">
+      <div>
+        <label for="command">ロボットへの指示</label>
+        <input id="command" name="command" class="ui-input" maxlength="500" autocomplete="off"
+          placeholder="例：箱を持ち上げて" required>
+      </div>
+      <div class="ui-row">
+        <button id="send" type="submit" class="ui-btn">指示する</button>
+        <button id="record" type="button" class="ui-btn ui-btn--secondary" aria-pressed="false">録音して指示する</button>
+      </div>
+    </form>
+    <p id="input-status" role="status"></p>
+
+    <div class="ui-row action-buttons" aria-label="あいさつと姿勢の指示">
+      <button type="button" class="ui-btn ui-btn--secondary" data-action="greet">あいさつして</button>
+      <button type="button" class="ui-btn ui-btn--secondary" data-action="nod">うなずいて</button>
+      <button type="button" class="ui-btn ui-btn--secondary" data-action="look_ball">ボールを見て</button>
+      <button type="button" class="ui-btn ui-btn--secondary" data-action="raise_arm">腕を上げて</button>
+      <button type="button" class="ui-btn ui-btn--secondary" data-action="home">基本姿勢に戻って</button>
+    </div>
+    <div class="ui-row action-buttons" aria-label="物体を扱う指示">
+      <button type="button" class="ui-btn ui-btn--secondary" data-action="pick_cube">箱を持ち上げて</button>
+      <button type="button" class="ui-btn ui-btn--secondary" data-action="place_cube">箱を置いて</button>
+      <button type="button" class="ui-btn ui-btn--secondary" data-action="pick_ball">ボールを持ち上げて</button>
+      <button type="button" class="ui-btn ui-btn--secondary" data-action="place_ball">ボールを置いて</button>
+    </div>
+    <div class="ui-row action-buttons" aria-label="手と台車の指示">
+      <button type="button" class="ui-btn ui-btn--secondary" data-action="open_hand">手を開いて</button>
+      <button type="button" class="ui-btn ui-btn--secondary" data-action="close_hand">手を閉じて</button>
+      <button type="button" class="ui-btn ui-btn--secondary" data-action="forward">少し前進</button>
+      <button type="button" class="ui-btn ui-btn--secondary" data-action="backward">少し後退</button>
+      <button type="button" class="ui-btn ui-btn--secondary" data-action="turn_left">少し左旋回</button>
+      <button type="button" class="ui-btn ui-btn--secondary" data-action="turn_right">少し右旋回</button>
+    </div>
+  </section>
+
+  <section aria-labelledby="output-title" class="ui-stack output-section">
+    <h2 id="output-title">単発動作の出力</h2>
+    <p id="reply" role="status" aria-live="polite">接続を確認しています。</p>
+    <dl class="output-data">
+      <div><dt>直前の入力</dt><dd id="last-input">まだありません</dd></div>
+    </dl>
+    <p id="error" class="ui-error" role="alert" hidden></p>
+  </section>
+    </div>
+  </details>
+
+  <details>
+    <summary>このデモの動作と使い方</summary>
+    <div class="details-body ui-stack">
+      <p>チャットで依頼すると、不足している内容をロボットが質問します。回答がそろうと点検プログラムを生成し、会話に表示します。内容を確認して「このプログラムを実行」を押すと動きます。質問への回答も、プログラムへの追加の指示も、同じ入力欄から送信できます。</p>
+      <p>例：「青い物だけにして。待つ時間を5秒、最後のうなずきを1回に変更して」。変更中・質問への回答待ちには以前の版を実行できません。「新しい相談」は現在のプログラムを引き継がずに始めます。保存したプログラムを読み込むと、その版をもとに新しい相談を始めます。</p>
+      <p>生成コードと保存操作は折りたたみから確認できます。保存・読み込み・実行にはAPIキーは不要です。このブラウザでは、ページを再読み込みすると直前の相談を復元します。</p>
+      <p>点検プログラムの音声入力は「音声入力を開始」で話し、「音声入力を終了」で文字起こしを確定します。発話の終了は自動判定しません（最大60秒で録音を終了）。途中の認識結果も入力欄に表示され、確定時に修正されることがあります。音声は録音中にOpenAIへ送信されます。</p>
+      <p>音声入力を始めると入力欄を新しい発話で置き換え、ロボットの読み上げを止めます。「キャンセル」または「すぐ停止」で開始前の入力に戻します。確定後は文字を編集できます。「送信」を押すとロボットが確認・生成します。新しい返答は文字で表示し、VOICEVOX で読み上げます。</p>
+      <p>点検プログラムの実行中は、単発動作と別のプログラムの実行はできません。「すぐ停止」はプログラム全体を中断します。持ち上げた物を保持したまま止まった場合は、単発操作の「箱を置いて」「ボールを置いて」で戻してから再実行してください。</p>
+      <p>単発操作では、一度に一つの動作を指示します。ボタンと「こんにちは」「箱を持ち上げて」などの定型文は、APIキーなしで使えます。</p>
+      <p>対象は<strong>赤い箱と青いボール</strong>です。物体を持ち上げる動作は、手と物体を固定する<strong>補助付き把持</strong>です。指の摩擦だけでつかむ物理把持とは異なります。対象はシミュレーション内の<strong>登録済み位置</strong>を使います。カメラで未知の物体を認識する機能は含みません。</p>
+      <p>単発動作の音声操作は「録音して指示する」を押して話し、もう一度押すと送信します。最大20秒です。音声はOpenAIへ文字起こしのため送信されます。こちらは文字起こし結果から動作が特定されると実行を開始します。</p>
+      <p>文字起こし・自由な表現の解釈にはUbuntu側のAPIキーが必要です。録音音声はこのサーバーにファイル保存しません。</p>
+      <p>「すぐ停止」は音声認識やGPTの返答を待たず、ロボットの停止処理を呼びます。音声の「止まって」は認識時間がかかるため、停止ボタンを使ってください。</p>
+      <p>操作画面はWindowsのChromeまたはEdgeで <code>http://127.0.0.1:8765</code> を開いて使います。マイクへのアクセスを許可してください。</p>
+    </div>
+  </details>
+  <details>
+    <summary>状態の詳細・動作履歴</summary>
+    <div class="details-body">
+      <pre id="state-detail">未取得</pre>
+    </div>
+  </details>
+  <details>
+    <summary>API設定・使用量</summary>
+    <div class="details-body ui-stack">
+      <p id="api-config">確認中</p>
+      <p>プログラム生成・修正には下記のモデルと処理方式を使います。単発動作の指示解釈は通常処理（default）です。文字起こしで返されなかった使用量や処理方式は未報告として記録します。API料金の金額はこの画面では計算しません。</p>
+      <pre id="usage">まだありません</pre>
+    </div>
+  </details>
+</main>
+<script src="/static/program_voice.js"></script>
+<script src="/static/robot_speech.js"></script>
+<script src="/static/chat_app.js"></script>
+</body>
+</html>

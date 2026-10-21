@@ -1,0 +1,56 @@
+/* DADS HTML Lite v1.0 — original, unofficial CSS; not the official DADS library. */
+:root {
+  --ui-bg: #fff; --ui-text: #1a1a1a; --ui-muted: #595959;
+  --ui-primary: #0017c1; --ui-hover: #00118f; --ui-border: #767676;
+  --ui-error: #b00020; --ui-radius: .5rem;
+  --ui-s1: .25rem; --ui-s2: .5rem; --ui-s3: 1rem;
+  --ui-s4: 1.5rem; --ui-s5: 2rem;
+  color-scheme: light;
+}
+*, *::before, *::after { box-sizing: border-box; }
+body {
+  margin: 0; color: var(--ui-text); background: var(--ui-bg);
+  font: 1rem/1.7 system-ui, "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+  overflow-wrap: anywhere;
+}
+button, input, select, textarea { font: inherit; }
+img, svg, video { max-width: 100%; height: auto; }
+h1, h2, h3 { line-height: 1.4; }
+h1 { font-size: 2rem; } h2 { font-size: 1.5rem; } h3 { font-size: 1.25rem; }
+a { color: var(--ui-primary); text-underline-offset: .2em; }
+a:hover { color: var(--ui-hover); }
+:focus-visible { outline: 3px solid #1a1a1a; outline-offset: 2px; box-shadow: 0 0 0 2px #ffdc00; }
+.ui-container { width: min(100%, 70rem); margin-inline: auto; padding: var(--ui-s5) var(--ui-s3); }
+.ui-stack > * { margin-block: 0; }
+.ui-stack > * + * { margin-block-start: var(--ui-s4); }
+.ui-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ui-s2); }
+.ui-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); gap: var(--ui-s4); }
+.ui-grid > * { min-width: 0; }
+.ui-card { border: 1px solid var(--ui-border); border-radius: var(--ui-radius); padding: var(--ui-s4); }
+.ui-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 2.75rem; min-width: 2.75rem; max-width: 100%;
+  padding: var(--ui-s2) var(--ui-s4); border: 2px solid var(--ui-primary);
+  border-radius: var(--ui-radius); background: var(--ui-primary); color: #fff;
+  font-weight: 700; text-decoration: none; white-space: normal; cursor: pointer;
+}
+.ui-btn:hover { background: var(--ui-hover); border-color: var(--ui-hover); color: #fff; text-decoration: underline; }
+.ui-btn--secondary { background: var(--ui-bg); color: var(--ui-primary); }
+.ui-btn--secondary:hover { background: var(--ui-bg); color: var(--ui-hover); }
+.ui-btn:disabled { background: #eee; color: #595959; border-color: #767676; cursor: not-allowed; text-decoration: none; }
+.ui-input {
+  display: block; width: 100%; min-height: 2.75rem; padding: var(--ui-s2);
+  border: 1px solid var(--ui-border); border-radius: var(--ui-radius);
+  color: var(--ui-text); background: var(--ui-bg);
+}
+textarea.ui-input { min-height: 8rem; resize: vertical; }
+label, legend { font-weight: 700; }
+.ui-help { color: var(--ui-muted); }
+.ui-error { color: var(--ui-error); }
+[aria-invalid="true"] { border: 2px solid var(--ui-error); }
+.ui-table-wrap { overflow: auto; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: var(--ui-s2) var(--ui-s3); border-bottom: 1px solid var(--ui-border); text-align: start; vertical-align: top; }
+.ui-skip { position: absolute; top: -10rem; left: 1rem; background: var(--ui-bg); padding: var(--ui-s2); }
+.ui-skip:focus { top: 1rem; z-index: 10; }
+@media (forced-colors: active) { :focus-visible { outline-color: Highlight; } .ui-btn { border-color: ButtonText; } }

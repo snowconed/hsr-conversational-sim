@@ -1,0 +1,2 @@
+# Bash scripts must keep LF line endings when checked out on Windows for WSL.
+*.sh text eol=lf

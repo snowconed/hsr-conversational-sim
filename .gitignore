@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+.pytest_cache/
+logs/
+programs/
+assets/
+vendor/
+tools/voicevox/
+.env
+.env.*
+*.pem
+*.key
+*.p12
