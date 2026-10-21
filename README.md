@@ -218,8 +218,22 @@ python3 -B -m unittest discover -s tests -p 'test_local_access.py' -v
 
 本プロジェクト独自のソースコード・ドキュメントは [MIT License](LICENSE) で提供します。
 
-HSR-B のモデル・メッシュなどは Toyota Motor Corporation の [hsrb_common](https://github.com/hsr-project/hsrb_common) に由来し、**BSD-3-Clause-Clear** が適用されます。[HSR_LICENSE.txt](HSR_LICENSE.txt) の著作権表示と条件を保持してください。`vendor/` の取得物や HSR 由来の生成物を、本プロジェクトの MIT License で再許諾するものではありません。モデル生成時にも `assets/HSR_LICENSE.txt` が作成されます。
+MIT License は、著作権表示と許諾文の保持を条件に、商用利用・改変・再配布などを認めます。詳しい条件と免責事項は LICENSE 本文を参照してください。第三者のソフトウェア、モデル、メッシュ、音声ライブラリ、およびそれらに由来する生成物を、本プロジェクトの MIT License で再許諾するものではありません。
 
-VOICEVOX 本体、エンジン、音声ライブラリ、および ROS、Gazebo、Python パッケージなどの依存物は、それぞれの権利者のライセンス・利用規約に従います。本プロジェクトの MIT License はこれらに適用されません。
+### HSR-B のモデル・メッシュ
+
+セットアップ時に取得するモデル・メッシュは Toyota Motor Corporation の [hsrb_common](https://github.com/hsr-project/hsrb_common) に由来します。取得先はコミット `c0b8ad5f813f1066b718f24911397d2a7f995cad` に固定しています。
+
+上流リポジトリ直下の [LICENSE.txt](https://github.com/hsr-project/hsrb_common/blob/c0b8ad5f813f1066b718f24911397d2a7f995cad/LICENSE.txt) は **BSD-3-Clause-Clear** で、その原文を [HSR_LICENSE.txt](HSR_LICENSE.txt) に保持しています。ただし、すべてのファイルが一律にこのライセンスとは限りません。上流の LICENSE と、各ファイルに適用されるライセンス・NOTICE に従ってください。
+
+例えば、Intel RealSense 由来の `d435_body.dae` と `d435_front.dae` は、[hsrb_parts_description/NOTICE](https://github.com/hsr-project/hsrb_common/blob/c0b8ad5f813f1066b718f24911397d2a7f995cad/hsrb_parts_description/NOTICE) に **Apache-2.0** の対象として記載されています。この NOTICE には Apache-2.0 のライセンス本文も含まれています。
+
+本リポジトリには `vendor/` の取得物や `assets/` の生成物を同梱していません。これらを別途再配布する場合は、含まれる素材に適用される条件に従い、ライセンス本文・著作権表示・NOTICE などを保持してください。モデル生成時には `assets/HSR_LICENSE.txt` も作成されますが、追加する素材の個別ライセンスや表示を代替するものではありません。
+
+### VOICEVOX とその他の依存物
+
+VOICEVOX 本体、エンジン、音声ライブラリは、それぞれのライセンス・利用規約に従います。音声を含む動画などを公開する場合は、使用した声に合わせたクレジット（例：`VOICEVOX:ずんだもん`）を表示し、[VOICEVOX の利用規約](https://voicevox.hiroshiba.jp/term/)と各音声ライブラリ・キャラクターの規約を確認してください。既定の声については、[ずんだもんの音源利用規約](https://zunko.jp/con_ongen_kiyaku.html)も参照してください。
+
+ROS、Gazebo、Python パッケージなどの依存物も、それぞれの権利者のライセンス・利用規約に従います。本プロジェクトの MIT License はこれらに適用されません。
 
 本プロジェクトは Toyota、OpenAI、VOICEVOX の公式製品や推奨を示すものではありません。

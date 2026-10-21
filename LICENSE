@@ -19,15 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-Third-party scope notice (not part of the MIT License text above):
-
-This license covers only the original code and documentation of this project.
-It does not relicense third-party software, models, meshes, voice libraries,
-or other assets, including downloaded dependencies and generated derivatives
-of third-party assets.
-
-Toyota HSR-B assets from hsr-project/hsrb_common retain their own
-BSD-3-Clause-Clear license; see HSR_LICENSE.txt and the upstream LICENSE.txt.
-VOICEVOX and its voice libraries retain their own licenses and terms.
-ROS, Gazebo, and Python dependencies also retain their respective licenses.
