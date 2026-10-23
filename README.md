@@ -1,10 +1,10 @@
-# robot_household
+# HSR Conversational Sim
 
-日本語の相談から、仮想の家事ロボットを動かす点検プログラムを作るデモです。Toyota の公開 HSR-B モデルを Gazebo で動かし、ブラウザから操作します。実機用ドライバーは読み込みません。
+日本語の対話から HSR-B の動作プログラムを作り、内容を確認して Gazebo 上で実行するシミュレーションデモです。Toyota の公開 HSR-B モデルを使い、ブラウザから相談・操作します。実機用ドライバーは読み込みません。
 
 - 相談しながら点検手順を生成・修正し、内容を確認してから実行できます。
 - 赤い箱と青いボールの持ち上げ・元の位置への返却、待機、あいさつ、うなずきなどに対応します。
-- 音声入力には OpenAI API、返答の読み上げには任意でローカルの VOICEVOX を使います。
+- プログラム生成・音声認識には OpenAI API、返答の読み上げには任意でローカルの VOICEVOX を使います。
 - ボタン、対応する定型文、保存済みプログラムの読み込み・実行は API キーなしで利用できます。
 
 本プロジェクトは **1 台の PC 内で使うシミュレーション用**です。アプリのインターネット公開、LAN 共有、実機制御を対象にしていません。
@@ -48,11 +48,11 @@ ROS 2 Jazzy と Gazebo Harmonic は公式の対応構成です。`ros-jazzy-ros-
 リポジトリを取得・展開し、`setup_environment.sh` があるディレクトリに移動してください。Windows のドライブ上に置いた場合は、Ubuntu から `/mnt/c/...` などのパスで参照できます。
 
 ```bash
-cd /path/to/robot_household
+cd /path/to/hsr-conversational-sim
 bash setup_environment.sh
 ```
 
-`/path/to/robot_household` は実際の配置先に置き換えます。スクリプトは以下を行います。
+`/path/to/hsr-conversational-sim` は実際の配置先に置き換えます。スクリプトは以下を行います。
 
 1. [hsr-project/hsrb_common](https://github.com/hsr-project/hsrb_common) の `jazzy` ブランチを `vendor/hsrb_common/` に取得し、コミット `c0b8ad5f813f1066b718f24911397d2a7f995cad` に固定します。
 2. `.venv/` に仮想環境を作り、`requirements.txt` の Python パッケージを導入します。

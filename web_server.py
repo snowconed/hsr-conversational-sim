@@ -192,7 +192,7 @@ async def lifespan(app: FastAPI):
         await run_in_threadpool(app.state.controller.close)
 
 
-app = FastAPI(title="家事ロボットの音声操作", lifespan=lifespan)
+app = FastAPI(title="HSR Conversational Sim", lifespan=lifespan)
 app.add_middleware(LocalAccessMiddleware)
 app.mount("/static", StaticFiles(directory=ROOT / "web"), name="static")
 
